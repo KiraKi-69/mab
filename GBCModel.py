@@ -25,7 +25,7 @@ class GBCModel(object):
 
     def predict(self,X,features_names):
 
-        df = pd.Dataframe(X, columns=features_names)
+        df = pd.DataFrame(X, columns=features_names)
         
         df[self.categorical_features] = self.encoder.transform(df[self.categorical_features])
         df = df.reindex(sorted(df.columns), axis=1)
