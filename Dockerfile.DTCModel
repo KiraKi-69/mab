@@ -14,7 +14,7 @@ EXPOSE 5000
 EXPOSE 9000
 
 # Define environment variables
-ENV MODEL_NAME GBCModel
+ENV MODEL_NAME DTCModel
 ENV SERVICE_TYPE MODEL
 
 # Changing folder to default user

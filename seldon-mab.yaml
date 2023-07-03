@@ -1,0 +1,69 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: seldon-mab-test
+spec:
+  name: seldon-mab-test
+  predictors:
+    - componentSpecs:
+        - spec:
+            containers:
+              - image: blcox/dtc-model:v0.5
+                imagePullPolicy: IfNotPresent
+                name: dtc
+                resources:
+                  requests:
+                    memory: 1Mi
+            terminationGracePeriodSeconds: 20
+        - spec:
+            containers:
+              - image: blcox/gbc-model:v0.5
+                imagePullPolicy: IfNotPresent
+                name: gbc
+                resources:
+                  requests:
+                    memory: 1Mi
+            terminationGracePeriodSeconds: 20
+        - spec:
+            containers:
+              - image: seldonio/mab_epsilon_greedy:1.16.0
+                name: eg-router
+            terminationGracePeriodSeconds: 20
+      graph:
+        children:
+          - children: []
+            name: dtc
+            type: MODEL
+          - children: []
+            name: gbc
+            type: MODEL
+        name: eg-router
+        parameters:
+          - name: n_branches
+            type: INT
+            value: '2'
+          - name: epsilon
+            type: FLOAT
+            value: '0.2'
+          - name: verbose
+            type: BOOL
+            value: '1'
+        type: ROUTER
+      labels:
+        fluentd: 'true'
+        version: 1.16.0
+      name: default
+      replicas: 1
+      svcOrchSpec:
+        env:
+          - name: SELDON_LOG_MESSAGES_EXTERNALLY
+            value: 'false'
+          - name: SELDON_LOG_MESSAGE_TYPE
+            value: seldon.message.pair
+          - name: SELDON_LOG_REQUESTS
+            value: 'true'
+          - name: SELDON_LOG_RESPONSES
+            value: 'true'
+        resources:
+          requests:
+            cpu: '0.1'
