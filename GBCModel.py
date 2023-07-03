@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import OrdinalEncoder
-import joblib
 
 class GBCModel(object):  
     
@@ -22,6 +21,12 @@ class GBCModel(object):
         self.model = joblib.load("GBC.pkl")
         
         print("Model loaded")
+        
+        self.cm = {"tp": 0, "fp": 0, "tn": 0, "fn": 0}
+
+        self.tries = 0
+        self.success = 0
+        self.value = 0
 
     def predict(self,X,features_names):
 
@@ -31,6 +36,8 @@ class GBCModel(object):
         df = df.reindex(sorted(df.columns), axis=1)
         
         predictions = self.model.predict(df)
+        
+        print(predictions)
         
         return predictions
 
