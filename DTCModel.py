@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import OrdinalEncoder
-
+import joblib
 class DTCModel(object):  
     
     def __init__(self):

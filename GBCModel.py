@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import OrdinalEncoder
+import joblib
 
 class GBCModel(object):  
     
